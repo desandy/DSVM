@@ -9,7 +9,7 @@ RUN apk --no-cache add netcat-openbsd
 RUN rm -rf /var/cache/apk/*
 
 WORKDIR /
-RUN git clone https://github.com/stamparm/DSVW
+RUN git clone https://github.com/desandy/DSVM
 
 WORKDIR /DSVW
 RUN sed -i 's/127.0.0.1/0.0.0.0/g' dsvw.py

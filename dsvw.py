@@ -23,15 +23,14 @@ def init():
     cursor.execute("CREATE TABLE comments(id INTEGER PRIMARY KEY AUTOINCREMENT, comment TEXT, time TEXT)")
 
 class ReqHandler(http.server.BaseHTTPRequestHandler):
-    def do_POST(self):
-            self.send_response(301)
-            self.send_header('Location','https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-            self.end_headers()
+    def redirect(self):
+        self.send_response(302)
+        self.send_header('Location','https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+        self.end_headers()   
     def do_GET(self):
         if self.client_address[0] not in ALLOWED_IPS:
-            self.send_response(301)
-            self.send_header('Location','https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-            self.end_headers()
+            self.redirect()
+            return
         path, query = self.path.split('?', 1) if '?' in self.path else (self.path, "")
         code, content, params, cursor = http.client.OK, HTML_PREFIX, dict((match.group("parameter"), urllib.parse.unquote(','.join(re.findall(r"(?:\A|[?&])%s=([^&]+)" % match.group("parameter"), query)))) for match in re.finditer(r"((\A|[?&])(?P<parameter>[\w\[\]]+)=)([^&]+)", query)), connection.cursor()
         try:

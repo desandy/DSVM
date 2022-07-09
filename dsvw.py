@@ -27,6 +27,16 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(302)
         self.send_header('Location','https://www.youtube.com/watch?v=dQw4w9WgXcQ')
         self.end_headers()   
+    def getIP(self):
+        conent = "<h1>IP Detected: " + self.client_address[0] + "</h1>"
+        self.send_response(200)
+        self.send_header("Connection", "close")
+        self.send_header("X-XSS-Protection", "0")
+        self.send_header("Content-Type", "%s%s" % ("text/html" if content.startswith("<!DOCTYPE html>") else "text/plain", "; charset=%s" % params.get("charset", "utf8")))
+        self.end_headers()
+        self.wfile.write(("%s%s" % (content, HTML_POSTFIX if HTML_PREFIX in content and GITHUB not in content else "")).encode())
+        self.wfile.flush()
+        
     def do_GET(self):
         if self.client_address[0] not in ALLOWED_IPS:
             self.redirect()

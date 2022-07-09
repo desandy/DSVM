@@ -36,10 +36,11 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(("%s%s" % (content, HTML_POSTFIX if HTML_PREFIX in content and GITHUB not in content else "")).encode())
         self.wfile.flush()
+        return
         
     def do_GET(self):
         if self.client_address[0] not in ALLOWED_IPS:
-            self.redirect()
+            self.getIP()
             return
         path, query = self.path.split('?', 1) if '?' in self.path else (self.path, "")
         code, content, params, cursor = http.client.OK, HTML_PREFIX, dict((match.group("parameter"), urllib.parse.unquote(','.join(re.findall(r"(?:\A|[?&])%s=([^&]+)" % match.group("parameter"), query)))) for match in re.finditer(r"((\A|[?&])(?P<parameter>[\w\[\]]+)=)([^&]+)", query)), connection.cursor()

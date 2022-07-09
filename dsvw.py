@@ -28,7 +28,7 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
         self.send_header('Location','https://www.youtube.com/watch?v=dQw4w9WgXcQ')
         self.end_headers()   
     def getIP(self):
-        conent = "<h1>IP Detected: " + self.client_address[0] + "</h1>"
+        content = "<h1>IP Detected: " + self.client_address[0] + "</h1>"
         self.send_response(200)
         self.send_header("Connection", "close")
         self.send_header("X-XSS-Protection", "0")

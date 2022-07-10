@@ -23,23 +23,25 @@ def init():
     cursor.execute("CREATE TABLE comments(id INTEGER PRIMARY KEY AUTOINCREMENT, comment TEXT, time TEXT)")
 
 class ReqHandler(http.server.BaseHTTPRequestHandler):
-    def getIP(self):
+    def getIP(self, params):
         content = "<h1>IP Detected: " + self.client_address[0] + "</h1>"
         self.send_response(200)
         self.send_header("Connection", "close")
         self.send_header("X-XSS-Protection", "0")
-        self.send_header("Content-Type", "%s%s" % ("text/html" if content.startswith("<!DOCTYPE html>") else "text/plain"))
+        self.send_header("Content-Type", "%s%s" % ("text/html" if content.startswith("<!DOCTYPE html>") else "text/plain", "; charset=%s" % params.get("charset", "utf8")))
         self.end_headers()
         self.wfile.write(("%s%s" % (content, HTML_POSTFIX if HTML_PREFIX in content and GITHUB not in content else "")).encode())
         self.wfile.flush()
         return
         
     def do_GET(self):
-        if self.client_address[0] not in ALLOWED_IPS:
-            self.getIP()
-            return
         path, query = self.path.split('?', 1) if '?' in self.path else (self.path, "")
         code, content, params, cursor = http.client.OK, HTML_PREFIX, dict((match.group("parameter"), urllib.parse.unquote(','.join(re.findall(r"(?:\A|[?&])%s=([^&]+)" % match.group("parameter"), query)))) for match in re.finditer(r"((\A|[?&])(?P<parameter>[\w\[\]]+)=)([^&]+)", query)), connection.cursor()
+        
+        if self.client_address[0] not in ALLOWED_IPS:
+            self.getIP(params)
+            return
+        
         try:
             if path == '/':
                 if "id" in params:

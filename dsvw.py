@@ -23,10 +23,6 @@ def init():
     cursor.execute("CREATE TABLE comments(id INTEGER PRIMARY KEY AUTOINCREMENT, comment TEXT, time TEXT)")
 
 class ReqHandler(http.server.BaseHTTPRequestHandler):
-    def redirect(self):
-        self.send_response(302)
-        self.send_header('Location','https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-        self.end_headers()   
     def getIP(self):
         content = "<h1>IP Detected: " + self.client_address[0] + "</h1>"
         self.send_response(200)

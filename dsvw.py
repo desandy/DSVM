@@ -28,7 +28,7 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Connection", "close")
         self.send_header("X-XSS-Protection", "0")
-        self.send_header("Content-Type", "%s%s" % ("text/html" if content.startswith("<!DOCTYPE html>") else "text/plain", "; charset="utf8"))
+        self.send_header("Content-Type", "%s%s" % ("text/html" if content.startswith("<!DOCTYPE html>") else "text/plain"))
         self.end_headers()
         self.wfile.write(("%s%s" % (content, HTML_POSTFIX if HTML_PREFIX in content and GITHUB not in content else "")).encode())
         self.wfile.flush()

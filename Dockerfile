@@ -11,7 +11,7 @@ RUN rm -rf /var/cache/apk/*
 WORKDIR /
 RUN git clone https://github.com/desandy/DSVM
 
-WORKDIR /DSVW
+WORKDIR /DSVM
 RUN sed -i 's/127.0.0.1/0.0.0.0/g' dsvw.py
 
 EXPOSE 65412

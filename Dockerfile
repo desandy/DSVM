@@ -1,4 +1,7 @@
-# Example: docker build . -t dsvw && docker run -p 65412:65412 dsvw
+# Example: docker build . -t dsvm && docker run -e "ALLOWED_IPS=172.17.0.1" -p 65412:65412 dsvm
+
+# Default docker bridge IP
+ENV ALLOWED_IPS=172.17.0.1
 
 FROM alpine:3.11
 

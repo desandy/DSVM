@@ -4,7 +4,7 @@ FROM alpine:3.11
 
 RUN apk --no-cache add git python3 py-lxml
     
-RUN apk --no-cache add netcat-openbsd tcpdump nmap
+RUN apk --no-cache add netcat-openbsd tcpdump nmap openssh
 
 RUN rm -rf /var/cache/apk/*
 
